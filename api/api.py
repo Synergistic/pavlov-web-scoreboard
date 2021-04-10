@@ -1,11 +1,10 @@
 import flask
 import rcon
 import asyncio
-from flask_cors import CORS #comment this on deployment
+#from flask_cors import CORS #comment this on deployment
 
-app = flask.Flask(__name__, static_folder='../build', static_url_path='/')
-app.config["DEBUG"] = True
-CORS(app)
+app = flask.Flask(__name__, static_folder='./build', static_url_path='/')
+#CORS(app)
 
 maps = {
     "UGC1758245796": "Nuke Town 2025",
@@ -31,7 +30,7 @@ def index():
     return app.send_static_file('index.html')
 
 
-@app.route('/server', methods=['GET'])
+@app.route('/api/server', methods=['GET'])
 def server():
     serverInfo = asyncio.run(rcon.getServerInfo())
     serverInfo["ServerInfo"]["MapId"] = serverInfo["ServerInfo"]["MapLabel"]

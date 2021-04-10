@@ -15,7 +15,7 @@ function App() {
 
   const fetchServerData = () => {
     setLoading(true);
-    fetch('/server').then(res => res.json())
+    fetch('/api/server').then(res => res.json())
     .then(data => {
       setServerInfo(data["ServerInfo"]);
       setPlayerList(data["Scores"]);
