@@ -1,5 +1,5 @@
 import flask
-from rcon import RconHelper
+import rcon
 import os
 import asyncio
 #from flask_cors import CORS #comment this on deployment
@@ -23,7 +23,8 @@ maps = {
     "UGC2262552543": "WarZone",
     "UGC2365826826": "dod_flash",
     "UGC2321123745": "BattleWar 2",
-    "UGC2296654393": "BattleArena"
+    "UGC2296654393": "BattleArena",
+    "UGC2406042677": "Militia"
 }
 
 @app.route('/')
@@ -33,15 +34,14 @@ def index():
 
 @app.route('/api/server', methods=['GET'])
 def server():
-    pavlovRcon = RconHelper(os.getenv("RCON_IP"), os.getenv("RCON_PORT"), os.getenv("RCON_PASS"))
-    serverInfo = asyncio.run(RconHelper.getServerInfo())
+    serverInfo = asyncio.run(rcon.getServerInfo())
     serverInfo["ServerInfo"]["MapId"] = serverInfo["ServerInfo"]["MapLabel"]
     serverInfo["ServerInfo"]["MapLabel"] = maps[serverInfo["ServerInfo"]["MapLabel"]]
     if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
-        players = asyncio.run(RconHelper.getPlayerList())
+        players = asyncio.run(rcon.getPlayerList())
         serverInfo["Scores"] = []
         for player in players['PlayerList']:
-            serverInfo["Scores"].append(asyncio.run(RconHelper.getPlayerDetails(player['UniqueId'])))
+            serverInfo["Scores"].append(asyncio.run(rcon.getPlayerDetails(player['UniqueId'])))
     else:
         serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'Boozus_Newyorkus-TTV', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},
 {'PlayerInfo': {'PlayerName': 'Pistoleiro', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
@@ -49,5 +49,5 @@ def server():
     return serverInfo
 
 
-app.run(host='0.0.0.0', debug=False, port=80)
+app.run(debug=True)
 

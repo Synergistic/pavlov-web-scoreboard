@@ -1,1 +1,2 @@
-from .rcon import RconHelper
+from .pavlov import PavlovRCON
+from .rcon import rcon
