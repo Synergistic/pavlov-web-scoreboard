@@ -47,6 +47,9 @@ function App() {
         <p>Map: {serverInfo["MapLabel"]}</p>
         <p>Mode: {serverInfo["GameMode"]}</p>
         <p>Players: {serverInfo["PlayerCount"]}</p>
+        {!playerList &&
+          <Header as='h4'>No current players</Header>
+        }
         {playerList && 
           <Table celled>
             <Table.Header>
