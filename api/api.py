@@ -1,5 +1,6 @@
 import flask
 from rcon import RconHelper
+import os
 import asyncio
 #from flask_cors import CORS #comment this on deployment
 
@@ -32,6 +33,7 @@ def index():
 
 @app.route('/api/server', methods=['GET'])
 def server():
+    pavlovRcon = RconHelper(os.getenv("RCON_IP"), os.getenv("RCON_PORT"), os.getenv("RCON_PASS"))
     serverInfo = asyncio.run(RconHelper.getServerInfo())
     serverInfo["ServerInfo"]["MapId"] = serverInfo["ServerInfo"]["MapLabel"]
     serverInfo["ServerInfo"]["MapLabel"] = maps[serverInfo["ServerInfo"]["MapLabel"]]
