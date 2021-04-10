@@ -1,11 +1,27 @@
 import flask
-import rconHelper
 import os
+from pavlov import PavlovRCON
 import asyncio
 #from flask_cors import CORS #comment this on deployment
 
 app = flask.Flask(__name__, static_folder='./build', static_url_path='/')
 #CORS(app)
+
+def getRconInstance():
+    return PavlovRCON(os.getenv("RCON_IP"), os.getenv("RCON_PORT"), os.getenv("RCON_PASS"))
+
+async def getPlayerList():
+    pavlov = getRconInstance()
+    players = await pavlov.send("RefreshList")
+    return players
+
+async def getServerInfo():
+    pavlov = getRconInstance()
+    return await pavlov.send("ServerInfo")
+    
+async def getPlayerDetails(playerId):
+    pavlov = getRconInstance()
+    return await pavlov.send("InspectPlayer " + str(playerId))
 
 maps = {
     "UGC1758245796": "Nuke Town 2025",
@@ -34,19 +50,21 @@ def index():
 
 @app.route('/api/server', methods=['GET'])
 def server():
-    serverInfo = asyncio.run(rconHelper.getServerInfo())
+    serverInfo = asyncio.run(getServerInfo())
     serverInfo["ServerInfo"]["MapId"] = serverInfo["ServerInfo"]["MapLabel"]
     serverInfo["ServerInfo"]["MapLabel"] = maps[serverInfo["ServerInfo"]["MapLabel"]]
     if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
-        players = asyncio.run(rconHelper.getPlayerList())
+        players = asyncio.run(getPlayerList())
         serverInfo["Scores"] = []
         for player in players['PlayerList']:
-            serverInfo["Scores"].append(asyncio.run(rconHelper.getPlayerDetails(player['UniqueId'])))
+            serverInfo["Scores"].append(asyncio.run(getPlayerDetails(player['UniqueId'])))
     else:
         serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'Boozus_Newyorkus-TTV', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},
 {'PlayerInfo': {'PlayerName': 'Pistoleiro', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
 
     return serverInfo
+
+
 
 
 app.run(debug=True)
