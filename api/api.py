@@ -1,5 +1,5 @@
 import flask
-import rcon
+from rcon import RconHelper
 import asyncio
 #from flask_cors import CORS #comment this on deployment
 
@@ -32,14 +32,14 @@ def index():
 
 @app.route('/api/server', methods=['GET'])
 def server():
-    serverInfo = asyncio.run(rcon.getServerInfo())
+    serverInfo = asyncio.run(RconHelper.getServerInfo())
     serverInfo["ServerInfo"]["MapId"] = serverInfo["ServerInfo"]["MapLabel"]
     serverInfo["ServerInfo"]["MapLabel"] = maps[serverInfo["ServerInfo"]["MapLabel"]]
     if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
-        players = asyncio.run(rcon.getPlayerList())
+        players = asyncio.run(RconHelper.getPlayerList())
         serverInfo["Scores"] = []
         for player in players['PlayerList']:
-            serverInfo["Scores"].append(asyncio.run(rcon.getPlayerDetails(player['UniqueId'])))
+            serverInfo["Scores"].append(asyncio.run(RconHelper.getPlayerDetails(player['UniqueId'])))
     else:
         serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'Boozus_Newyorkus-TTV', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},
 {'PlayerInfo': {'PlayerName': 'Pistoleiro', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
