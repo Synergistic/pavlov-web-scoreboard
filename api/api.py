@@ -4,7 +4,7 @@ from pavlov import PavlovRCON
 import asyncio
 #from flask_cors import CORS #comment this on deployment
 
-app = flask.Flask(__name__, static_folder='./build', static_url_path='/')
+app = flask.Flask(__name__, static_folder='../build', static_url_path='/')
 #CORS(app)
 
 def getRconInstance():
