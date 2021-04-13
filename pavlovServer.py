@@ -159,8 +159,8 @@ def parsePlayersIntoDTO(serverInfo):
 
 async def PingAndUpdate():
     serverInfo = await getServerData() 
-    serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
-    serverInfo["ServerInfo"]["RoundState"] = "WaitingPostMatch"
+    #serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
+    #serverInfo["ServerInfo"]["RoundState"] = "WaitingPostMatch"
     currentRoundState = serverInfo["ServerInfo"]["RoundState"]
     if currentRoundState in ["WaitingPostMatch", "LeavingMap"]:
       players = parsePlayersIntoDTO(serverInfo)
