@@ -1,6 +1,6 @@
 import flask
 import asyncio
-import pavlovServer
+from pavlovServer import DbContext, PingAndUpdate, getServerData
 #from flask_cors import CORS #comment this on deployment
 
 app = flask.Flask(__name__, static_folder='../build', static_url_path='/')
@@ -13,18 +13,18 @@ def index():
 @app.route("/api/leaderboard/update")
 def ping():
     try:
-        asyncio.run(pavlovServer.PingAndUpdate())
+        asyncio.run(PingAndUpdate())
     except:
         return flask.jsonify({'success': 'False'})
     return flask.jsonify({'success': 'True'})
     
 @app.route("/api/leaderboard/get")
 def getleaderboard():
-    return flask.jsonify(pavlovServer.DbContext().getAllPlayers())
+    return flask.jsonify(DbContext().getAllPlayers())
 
 @app.route('/api/server', methods=['GET'])
 def server():
-    return asyncio.run(pavlovServer.getServerData())
+    return asyncio.run(getServerData())
 
 if __name__ == '__main__':
     app.run(debug=False)
