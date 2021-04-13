@@ -56,10 +56,19 @@ def ping():
             serverInfo["Scores"] = getPlayerStats(serverInfo)
     return serverInfo
 
-@app.route('/api/server/test', methods=['GET'])
+@app.route('/api/test/data', methods=['GET'])
 def test():
     serverInfo = getServerData()
     serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
+    return serverInfo
+
+@app.route('/api/test/scoreping', methods=['GET'])
+def test():
+    serverInfo = getServerData()
+    currentRoundState = serverInfo["ServerInfo"]["RoundState"]
+    if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
+        if currentRoundState in ["WaitingPostMatch", "LeavingMap"]:
+            serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
     return serverInfo
 
 @app.route('/api/server', methods=['GET'])
