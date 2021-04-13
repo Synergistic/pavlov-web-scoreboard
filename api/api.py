@@ -63,7 +63,7 @@ def test():
     return serverInfo
 
 @app.route('/api/test/scoreping', methods=['GET'])
-def test():
+def pingtest():
     serverInfo = getServerData()
     currentRoundState = serverInfo["ServerInfo"]["RoundState"]
     if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
