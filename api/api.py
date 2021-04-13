@@ -47,14 +47,6 @@ maps = {
 def index():
     return app.send_static_file('index.html')
 
-@app.route("/api/scoreping")
-def ping():
-    serverInfo = getServerInfo()
-    currentRoundState = serverInfo["ServerInfo"]["RoundState"]
-    if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
-        if currentRoundState in ["WaitingPostMatch", "LeavingMap"]:
-            serverInfo["Scores"] = getPlayerStats(serverInfo)
-    return serverInfo
 
 @app.route('/api/server', methods=['GET'])
 def server():
