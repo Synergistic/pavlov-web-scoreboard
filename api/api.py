@@ -47,16 +47,24 @@ maps = {
 def index():
     return app.send_static_file('index.html')
 
+@app.route("/api/scoreping")
+def ping():
+    serverInfo = getServerData()
+    currentRoundState = serverInfo["ServerInfo"]["RoundState"]
+    if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
+        if currentRoundState in ["WaitingPostMatch", "LeavingMap"]:
+            serverInfo["Scores"] = getPlayerStats(serverInfo)
+    return serverInfo
 
 @app.route('/api/server', methods=['GET'])
 def server():
-    serverInfo = getServerInfo()
+    serverInfo = getServerData()
     serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
     #serverInfo["Scores"] = getPlayerStats(serverInfo)
     return serverInfo
 
 
-def getServerInfo():
+def getServerData():
     serverInfo = asyncio.run(getServerInfo())
     serverInfo["ServerInfo"]["MapId"] = serverInfo["ServerInfo"]["MapLabel"]
     try:
