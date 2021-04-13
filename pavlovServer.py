@@ -164,10 +164,12 @@ async def PingAndUpdate():
     currentRoundState = serverInfo["ServerInfo"]["RoundState"]
     if currentRoundState in ["WaitingPostMatch", "LeavingMap"]:
       players = parsePlayersIntoDTO(serverInfo)
-      if players is None: return
+      if players is None: return False
       db = DbContext()
       for player in players:
           db.upsertPlayerRecord(player)
+    else: return False
+    return True
 
 async def getServerData():
     server = Rcon(os.getenv("RCON_IP"), os.getenv("RCON_PORT"), os.getenv("RCON_PASS"))
