@@ -3,6 +3,7 @@ import os, sys
 import json
 import requests
 from pavlov import PavlovRCON
+import traceback
 
 maps = {
     "UGC1758245796": "Nuke Town 2025",
@@ -180,7 +181,7 @@ async def PingAndUpdate():
         for player in players:
             db.upsertPlayerRecord(player)
     except:
-        return {'success': False, 'status': 0, 'exception': ("{}".format(str(sys.exc_info()))) }
+        return {'success': False, 'status': 0, 'exception': traceback.print_exc() }
     return {'success': True, 'status': 3 }
 
 async def getServerData():
