@@ -163,7 +163,7 @@ async def PingAndUpdate():
     #serverInfo["ServerInfo"]["RoundState"] = "WaitingPostMatch"
     currentRoundState = serverInfo["ServerInfo"]["RoundState"]
     print("currentRoundState: " + currentRoundState)
-    if currentRoundState in ["WaitingPostMatch", "LeavingMap"]:
+    if currentRoundState == "Ended":
         print("hit: " + currentRoundState)
         players = parsePlayersIntoDTO(serverInfo)
         if players is None: return True
