@@ -64,7 +64,7 @@ class DbContext:
         query = ("SELECT steamId, name, kills, deaths, points from season0 "
                  "WHERE steamId = {}").format(steamId)
         self.execute(query)
-        result = next((r for r in self.cursor if r), False)
+        result = next((r for r in self.cursor if r), None)
         self.close()
         if result is None: return result
         return {
@@ -160,8 +160,6 @@ def parsePlayersIntoDTO(serverInfo):
 async def PingAndUpdate():
     try:
         serverInfo = await getServerData() 
-        #serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
-        #serverInfo["ServerInfo"]["RoundState"] = "WaitingPostMatch"
         players = parsePlayersIntoDTO(serverInfo)
         if players is None: return {'success': True, 'status': 1 }
         currentRoundState = serverInfo["ServerInfo"]["RoundState"]
