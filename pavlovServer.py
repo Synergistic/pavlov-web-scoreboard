@@ -181,7 +181,8 @@ async def PingAndUpdate():
         for player in players:
             db.upsertPlayerRecord(player)
     except:
-        return {'success': False, 'status': 0, 'exception': traceback.print_exc() }
+        e = sys.exc_info();
+        return {'success': False, 'status': 0, 'exception': str(e), "trace": traceback.print_exception(e) }
     return {'success': True, 'status': 3 }
 
 async def getServerData():
