@@ -158,21 +158,28 @@ def parsePlayersIntoDTO(serverInfo):
     return playerDTOs
 
 async def PingAndUpdate():
-    serverInfo = await getServerData() 
-    #serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
-    #serverInfo["ServerInfo"]["RoundState"] = "WaitingPostMatch"
-    currentRoundState = serverInfo["ServerInfo"]["RoundState"]
-    print("currentRoundState: " + currentRoundState)
-    if currentRoundState == "Ended":
-        print("hit: " + currentRoundState)
+    try:
+        serverInfo = await getServerData() 
+        #serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
+        #serverInfo["ServerInfo"]["RoundState"] = "WaitingPostMatch"
         players = parsePlayersIntoDTO(serverInfo)
-        if players is None: return True
+        if players is None: return {'success': True, 'status': UpdateStatus.NO_PLAYERS }
+        currentRoundState = serverInfo["ServerInfo"]["RoundState"]
+        if currentRoundState != "Ended": return {'success': True, 'status': UpdateStatus.ROUND_ONGOING }
         db = DbContext()
         for player in players:
             db.upsertPlayerRecord(player)
-    else: return False
-    return True
+    except:
+        return {'success': False, 'status': UpdateStatus.FAILED }
+    return {'success': True, 'status': UpdateStatus.SCORES_SAVED }
 
 async def getServerData():
     server = Rcon(os.getenv("RCON_IP"), os.getenv("RCON_PORT"), os.getenv("RCON_PASS"))
     return await server.getServerInfo()
+
+from enum import Enum
+class UpdateStatus(Enum):
+    FAILED = 0
+    NO_PLAYERS = 1
+    ROUND_ONGOING = 2
+    SCORES_SAVED = 3

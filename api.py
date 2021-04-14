@@ -12,11 +12,7 @@ def index():
 
 @app.route("/api/leaderboard/update")
 def ping():
-    try:
-        updated = asyncio.run(PingAndUpdate())
-    except:
-        return flask.jsonify({'success': False})
-    return flask.jsonify({'success': True, 'updated': updated})
+    return flask.jsonify(asyncio.run(PingAndUpdate()))
     
 @app.route("/api/leaderboard/get")
 def getleaderboard():
