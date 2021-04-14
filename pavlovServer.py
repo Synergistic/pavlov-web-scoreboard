@@ -154,14 +154,17 @@ def parsePlayersIntoDTO(serverInfo):
     playerDTOs = []
     for playerInfo in serverInfo["Scores"]:
         player = playerInfo["PlayerInfo"]
-        kda = player["KDA"].split("/")
-        playerDTOs.append({
-        'kills': kda[0],
-        'deaths': kda[1],
-        'points': player["Score"],
-        'steamId': player["UniqueId"],
-        'name': player["PlayerName"]
-        })
+        try:
+            kda = player["KDA"].split("/")
+            playerDTOs.append({
+            'kills': kda[0],
+            'deaths': kda[1],
+            'points': player["Score"],
+            'steamId': player["UniqueId"],
+            'name': player["PlayerName"]
+            })
+        except KeyError:
+            raise Exception("KeyError Parsing Player: " + player)
     return playerDTOs
 
 async def PingAndUpdate():
@@ -184,5 +187,5 @@ async def getServerData():
     server = Rcon(os.getenv("RCON_IP"), os.getenv("RCON_PORT"), os.getenv("RCON_PASS"))
     serverInfo = await server.getServerInfo()
     if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
-        serverInfo["Scores"] = await self.getPlayerStats(serverInfo)
+        serverInfo["Scores"] = await server.getPlayerStats(serverInfo)
     return serverInfo
