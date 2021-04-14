@@ -1,5 +1,5 @@
 import mysql.connector
-import os
+import os, sys
 import json
 import requests
 from pavlov import PavlovRCON
@@ -170,7 +170,7 @@ async def PingAndUpdate():
         for player in players:
             db.upsertPlayerRecord(player)
     except:
-        return {'success': False, 'status': 0 }
+        return {'success': False, 'status': 0, 'exception': sys.exc_info()[0] }
     return {'success': True, 'status': 3 }
 
 async def getServerData():
