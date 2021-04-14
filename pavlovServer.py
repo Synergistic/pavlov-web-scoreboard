@@ -128,7 +128,7 @@ class Rcon:
         except:
             print("Missing map name " + serverInfo["ServerInfo"]["MapLabel"])
         if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) != 0:
-            serverInfo["Scores"] = await getPlayerStats(serverInfo)
+            serverInfo["Scores"] = await self.getPlayerStats(serverInfo)
         return serverInfo
 
     async def getPlayerStats(self, serverInfo):
@@ -136,7 +136,7 @@ class Rcon:
         players = await rconInstance.send("RefreshList")
         stats = []
         for player in players['PlayerList']:
-            stats.append(asyncio.run(rconInstance.send("InspectPlayer " + str(player['UniqueId']))))
+            stats.append(await rconInstance.send("InspectPlayer " + str(player['UniqueId'])))
         return stats
 
 def parsePlayersIntoDTO(serverInfo):
@@ -170,7 +170,9 @@ async def PingAndUpdate():
         for player in players:
             db.upsertPlayerRecord(player)
     except:
-        return {'success': False, 'status': 0, 'exception': sys.exc_info()[0] }
+        a =  sys.exc_info()
+        breakpoint()
+        return {'success': False, 'status': 0, 'exception': 'a' }
     return {'success': True, 'status': 3 }
 
 async def getServerData():
