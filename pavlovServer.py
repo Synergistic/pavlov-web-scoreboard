@@ -164,7 +164,7 @@ async def PingAndUpdate():
     currentRoundState = serverInfo["ServerInfo"]["RoundState"]
     if currentRoundState in ["WaitingPostMatch", "LeavingMap"]:
       players = parsePlayersIntoDTO(serverInfo)
-      if players is None: return False
+      if players is None: return True
       db = DbContext()
       for player in players:
           db.upsertPlayerRecord(player)
