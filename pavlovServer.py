@@ -162,12 +162,14 @@ async def PingAndUpdate():
     #serverInfo["Scores"] = [{'PlayerInfo': {'PlayerName': 'TestMan1', 'UniqueId': '76561198018139374', 'KDA': '3/7/3', 'Score': '6', 'Cash': '20000', 'TeamId': '0'}},{'PlayerInfo': {'PlayerName': 'TestMan2', 'UniqueId': '76561197974494897', 'KDA': '7/3/7', 'Score': '14', 'Cash': '16000', 'TeamId': '1'}}]
     #serverInfo["ServerInfo"]["RoundState"] = "WaitingPostMatch"
     currentRoundState = serverInfo["ServerInfo"]["RoundState"]
+    print("currentRoundState: " + currentRoundState)
     if currentRoundState in ["WaitingPostMatch", "LeavingMap"]:
-      players = parsePlayersIntoDTO(serverInfo)
-      if players is None: return True
-      db = DbContext()
-      for player in players:
-          db.upsertPlayerRecord(player)
+        print("hit: " + currentRoundState)
+        players = parsePlayersIntoDTO(serverInfo)
+        if players is None: return True
+        db = DbContext()
+        for player in players:
+            db.upsertPlayerRecord(player)
     else: return False
     return True
 
