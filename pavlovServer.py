@@ -170,9 +170,7 @@ async def PingAndUpdate():
         for player in players:
             db.upsertPlayerRecord(player)
     except:
-        a =  sys.exc_info()
-        breakpoint()
-        return {'success': False, 'status': 0, 'exception': 'a' }
+        return {'success': False, 'status': 0 }
     return {'success': True, 'status': 3 }
 
 async def getServerData():
