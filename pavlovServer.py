@@ -61,34 +61,43 @@ class DbContext:
         return results
 
     def findPlayerById(self, steamId):
-        query = ("SELECT steamId, name, kills, deaths, points from season0 "
-                 "WHERE steamId = {}").format(steamId)
-        self.execute(query)
-        result = next((r for r in self.cursor if r), None)
-        self.close()
-        if result is None: return result
-        return {
-                'steamId': result[0],
-                'name': result[1],
-                'kills': result[2],
-                'deaths': result[3],
-                'points': result[4]
-            }
+        try:
+            query = ("SELECT steamId, name, kills, deaths, points from season0 "
+                    "WHERE steamId = {}").format(steamId)
+            self.execute(query)
+            result = next((r for r in self.cursor if r), None)
+            self.close()
+            if result is None: return result
+            return {
+                    'steamId': result[0],
+                    'name': result[1],
+                    'kills': result[2],
+                    'deaths': result[3],
+                    'points': result[4]
+                }
+        except:
+            raise Exception("find " + str(sys.exc_info()))
+
 
     def insertNewPlayerRecord(self, player):
-        query = ("INSERT INTO season0 "
-                      "(steamId, name, kills, deaths, points) "
-                      "VALUES ({}, '{}', {}, {}, {})".format(player["steamId"], player["name"], player["kills"], player["deaths"], player["points"]))
-        self.execute(query)
-        self.close()
-        return
+        try:
+            query = ("INSERT INTO season0 "
+                        "(steamId, name, kills, deaths, points) "
+                        "VALUES ({}, '{}', {}, {}, {})".format(player["steamId"], player["name"], player["kills"], player["deaths"], player["points"]))
+            self.execute(query)
+            self.close()
+        except:
+            raise Exception("insert " + str(sys.exc_info()))
 
     def updatePlayerRecord(self, player):
-        query = ("UPDATE season0 "
-                         "SET kills = {}, deaths = {}, points = {} "
-                         "WHERE steamId = {}").format(player["kills"], player["deaths"], player["points"], player["steamId"])
-        self.execute(query)
-        self.close()
+        try:
+            query = ("UPDATE season0 "
+                            "SET kills = {}, deaths = {}, points = {} "
+                            "WHERE steamId = {}").format(player["kills"], player["deaths"], player["points"], player["steamId"])
+            self.execute(query)
+            self.close()
+        except:
+            raise Exception("update " + str(sys.exc_info()))
         return
 
     def upsertPlayerRecord(self, player):
