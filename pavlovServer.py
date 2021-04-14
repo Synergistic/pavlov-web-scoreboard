@@ -160,11 +160,10 @@ async def PingAndUpdate():
         server = Rcon(os.getenv("RCON_IP"), os.getenv("RCON_PORT"), os.getenv("RCON_PASS"))
         serverInfo = await server.getServerInfo()
         if int(serverInfo["ServerInfo"]["PlayerCount"].split("/")[0]) == 0: return {'success': True, 'status': 1 }
-        serverInfo["Scores"] = await server.getPlayerStats(serverInfo)
-        players = parsePlayersIntoDTO(serverInfo)
-        if players is None: return {'success': True, 'status': 1 }
         currentRoundState = serverInfo["ServerInfo"]["RoundState"]
         if currentRoundState != "Ended": return {'success': True, 'status': 2 }
+        serverInfo["Scores"] = await server.getPlayerStats(serverInfo)
+        players = parsePlayersIntoDTO(serverInfo)
         db = DbContext()
         for player in players:
             db.upsertPlayerRecord(player)
