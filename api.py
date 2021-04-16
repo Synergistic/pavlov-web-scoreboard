@@ -1,7 +1,8 @@
 import flask
 import asyncio
-from pavlovServer import DbContext, PingAndUpdate, getServerData
+import json
 import PavlovServerAdmin
+import PavlovMapRotationManager
 
 #from flask_cors import CORS #comment this on deployment
 
@@ -23,6 +24,16 @@ def getleaderboard():
 @app.route('/api/server', methods=['GET'])
 def server():
     return flask.jsonify(asyncio.run(PavlovServerAdmin.getServerInfo()))
+
+@app.route('/api/map/fromId', methods=['GET'])
+def map_fromId():
+    maps = PavlovMapRotationManager.PavlovMapThing("CA018752ED6629094BDA16F895479268")
+    return flask.jsonify([maps.get_map(i).title for i in flask.request.args["id"].split(",")])
+
+@app.route('/api/map/fromRotation', methods=['GET'])
+def map_fromRotation():
+    maps = PavlovMapRotationManager.PavlovMapThing("CA018752ED6629094BDA16F895479268")
+    return flask.jsonify(maps.rotation_to_data(flask.request.args["rotation"]))
 
 if __name__ == '__main__':
     app.run(debug=False)

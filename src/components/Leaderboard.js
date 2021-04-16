@@ -30,7 +30,7 @@ function Leaderboard() {
 
     return (
         <div style={{ height: '600px'}}>
-            <Typography variant='h4' className="header" gutterBottom>Preseason Leaderboard</Typography>
+            <Typography variant='h4' className="header" gutterBottom>Pre-season Leaderboard (Beta)</Typography>
             {loading &&
                 <CircularProgress color='secondary' />
             }
