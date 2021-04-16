@@ -18,7 +18,6 @@ def not_found(e):
     
 @app.route("/api/leaderboard/get")
 def getleaderboard():
-    breakpoint()
     return flask.jsonify(asyncio.run(PavlovServerAdmin.getLeaderboard()))
 
 @app.route('/api/server', methods=['GET'])
