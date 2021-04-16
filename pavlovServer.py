@@ -155,17 +155,15 @@ def parsePlayersIntoDTO(serverInfo):
     playerDTOs = []
     for playerInfo in serverInfo["Scores"]:
         player = playerInfo["PlayerInfo"]
-        try:
-            kda = player["KDA"].split("/")
-            playerDTOs.append({
-            'kills': kda[0],
-            'deaths': kda[1],
-            'points': player["Score"],
-            'steamId': player["UniqueId"],
-            'name': player["PlayerName"]
-            })
-        except KeyError:
-            raise Exception("KeyError Parsing Player: " + str(player))
+        if not all(key in player for key in ("KDA", "Score", "UniqueId", "PlayerName")): continue
+        kda = player["KDA"].split("/")
+        playerDTOs.append({
+        'kills': kda[0],
+        'deaths': kda[1],
+        'points': player["Score"],
+        'steamId': player["UniqueId"],
+        'name': player["PlayerName"]
+        })
     return playerDTOs
 
 async def PingAndUpdate():
