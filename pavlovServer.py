@@ -77,7 +77,7 @@ class DbContext:
                     'points': result[4]
                 }
         except:
-            raise Exception("find " + str(sys.exc_info()))
+            raise Exception("find " + str(sys.exc_info()) + " " + traceback.format_exc())
 
 
     def insertNewPlayerRecord(self, player):
@@ -88,7 +88,7 @@ class DbContext:
             self.execute(query)
             self.close()
         except:
-            raise Exception("insert " + str(sys.exc_info()))
+            raise Exception("insert " + str(sys.exc_info()) + " " + traceback.format_exc())
 
     def updatePlayerRecord(self, player):
         try:
@@ -98,7 +98,7 @@ class DbContext:
             self.execute(query)
             self.close()
         except:
-            raise Exception("update " + str(sys.exc_info()))
+            raise Exception("update " + str(sys.exc_info()) + " " + traceback.format_exc())
         return
 
     def upsertPlayerRecord(self, player):
@@ -181,8 +181,8 @@ async def PingAndUpdate():
         for player in players:
             db.upsertPlayerRecord(player)
     except:
-        e = sys.exc_info();
-        return {'success': False, 'status': 0, 'exception': str(e), "trace": traceback.print_tb(e[2]) }
+        e = sys.exc_info()
+        return {'success': False, 'status': 0, 'exception': str(e), "trace": traceback.format_exc() }
     return {'success': True, 'status': 3 }
 
 async def getServerData():
