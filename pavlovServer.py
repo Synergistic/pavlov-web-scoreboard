@@ -165,7 +165,7 @@ def parsePlayersIntoDTO(serverInfo):
             'name': player["PlayerName"]
             })
         except KeyError:
-            raise Exception("KeyError Parsing Player: " + player)
+            raise Exception("KeyError Parsing Player: " + str(player))
     return playerDTOs
 
 async def PingAndUpdate():
