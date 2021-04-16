@@ -148,14 +148,13 @@ class Rcon:
         return stats
 
 def parsePlayersIntoDTO(serverInfo):
-    try:
-        serverInfo["Scores"]
-    except KeyError:
-        return
+    if "Scores" not in serverInfo: return
     playerDTOs = []
     for playerInfo in serverInfo["Scores"]:
         player = playerInfo["PlayerInfo"]
-        if not all(key in player for key in ("KDA", "Score", "UniqueId", "PlayerName")): continue
+        if not all(key in player for key in ("KDA", "Score", "UniqueId", "PlayerName")): 
+            print("~~~~~~~EMPTY PLAYER~~~~~~~~" + str(serverInfo))
+            continue
         kda = player["KDA"].split("/")
         playerDTOs.append({
         'kills': kda[0],
