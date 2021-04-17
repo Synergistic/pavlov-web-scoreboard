@@ -25,7 +25,8 @@ def getleaderboard():
 def server():
     serverInfo = asyncio.run(PavlovServerAdmin.getServerInfo())
     maps = PavlovMapRotationManager.PavlovMapThing("CA018752ED6629094BDA16F895479268")
-    serverInfo["MapLabel"] = maps.get_map(serverInfo["MapLabel"]).title
+    if("ugc" in serverInfo["MapLabel"].lower()):
+        serverInfo["MapLabel"] = maps.get_map(serverInfo["MapLabel"]).title
     return flask.jsonify(serverInfo)
 
 @app.route('/api/map/fromId', methods=['GET'])
