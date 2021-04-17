@@ -23,7 +23,10 @@ def getleaderboard():
 
 @app.route('/api/server', methods=['GET'])
 def server():
-    return flask.jsonify(asyncio.run(PavlovServerAdmin.getServerInfo()))
+    serverInfo = asyncio.run(PavlovServerAdmin.getServerInfo())
+    maps = PavlovMapRotationManager.PavlovMapThing("CA018752ED6629094BDA16F895479268")
+    serverInfo["MapLabel"] = maps.get_map(serverInfo["MapLabel"]).title
+    return flask.jsonify(serverInfo)
 
 @app.route('/api/map/fromId', methods=['GET'])
 def map_fromId():
@@ -34,6 +37,11 @@ def map_fromId():
 def map_fromRotation():
     maps = PavlovMapRotationManager.PavlovMapThing("CA018752ED6629094BDA16F895479268")
     return flask.jsonify(maps.rotation_to_data(flask.request.args["rotation"]))
+
+@app.route('/api/map/rotationFromData', methods=['POST'])
+def map_rotationFromData():
+    maps = PavlovMapRotationManager.PavlovMapThing("CA018752ED6629094BDA16F895479268")
+    return flask.jsonify(maps.data_to_rotation(flask.request.json))
 
 if __name__ == '__main__':
     app.run(debug=False)

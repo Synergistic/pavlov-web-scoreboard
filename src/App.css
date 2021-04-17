@@ -40,6 +40,19 @@ body {
   border-radius: 6px
 }
 
+.rotation-input {
+  margin-top: 24px!important;
+  width: 400px;
+  background-color: white!important;
+}
+
+.delete-icon {
+  position: absolute!important;
+  right: 10px;
+  bottom: 2px;
+}
+
+
 @media (min-width:1281px) {
   .mobile {
     display: none!important;

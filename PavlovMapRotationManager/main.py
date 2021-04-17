@@ -5,7 +5,6 @@ class PavlovMapThing:
         self.steam = SteamAPI(steamApiKey)
 
     def get_map(self, mapId):
-        print(mapId)
         return self.steam.get_workshop_file(mapId.lower().replace("ugc", ""))
 
     def id_to_name(self, mapId):
@@ -22,4 +21,4 @@ class PavlovMapThing:
         return ["MapRotation=(MapId='{}', GameMode='{}')".format(m["id"], m["gameMode"]) for m in mapDataSet]
     
     def __stripRotationStrip(self, mapRotationString):
-        return mapRotationString.replace("MapRotation=(MapId='", "").replace("', GameMode='",",").replace("')","|").split("|")
+        return mapRotationString.replace('"',"'").replace("MapRotation=(MapId='", "").replace("', GameMode='",",").replace("')","|").split("|")

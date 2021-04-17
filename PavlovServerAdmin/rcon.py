@@ -1,26 +1,6 @@
 from pavlov import PavlovRCON
 import sys, traceback
 
-maps = {
-    "UGC1758245796": "Nuke Town 2025",
-    "UGC1675848285": "aim_usp",
-    "UGC2367805592": "Bridge Crossing",
-    "UGC1710753557": "Snow",
-    "UGC1884572674": "MW2 Terminal",
-    "UGC2363287266": "Avalanche DoD:S",
-    "UGC1984149656": "McDonalds",
-    "UGC2152454678": "The Gulag",
-    "UGC1675848538": "gg_deagle5",
-    "UGC2201914075": "Crackhouse 1.6",
-    "UGC2249948962": "BattleWar",
-    "UGC1080743206": "Office HQ",
-    "UGC2262552543": "WarZone",
-    "UGC2365826826": "dod_flash",
-    "UGC2321123745": "BattleWar 2",
-    "UGC2296654393": "BattleArena",
-    "UGC2406042677": "Militia"
-}
-
 class Rcon:
     def __init__(self, ip, port, password):
         self.ip = ip
@@ -30,15 +10,10 @@ class Rcon:
 
 
     async def getServerInfo(self):
-        return (await self.rconInstance.send("ServerInfo"))["ServerInfo"]
-
-    async def getFriendlyMapName(self, mapId):
-        return maps[mapId]
-        # serverInfo["ServerInfo"]["MapId"] = serverInfo["ServerInfo"]["MapLabel"]
-        # try:
-        #     serverInfo["ServerInfo"]["MapLabel"] = maps[serverInfo["ServerInfo"]["MapLabel"]]
-        # except:
-        #     return serverInfo["ServerInfo"]  # make this lookup on steam
+        try:
+            return (await self.rconInstance.send("ServerInfo"))["ServerInfo"]
+        except:
+            return None
 
     async def getPlayerList(self):
         pList = await self.rconInstance.send("RefreshList")

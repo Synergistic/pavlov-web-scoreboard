@@ -19,7 +19,8 @@ class Poller:
     async def poll_server_info(self):
         while(True):
             try:
-                self.__server_info_current = await self.__rconConnection.getServerInfo()
+                newServerInfo = await self.__rconConnection.getServerInfo()
+                if newServerInfo is not None: self.__server_info_current = newServerInfo
                 playerCount = int(self.__server_info_current["PlayerCount"].split("/")[0])
                 roundEnding = self.__server_info_current["RoundState"] == "Ended"
                 if roundEnding and (self.__players_to_save or (playerCount > 0)):

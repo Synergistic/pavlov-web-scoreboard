@@ -15,6 +15,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import MapHelper from './components/MapHelper';
 
 function App(props) {
   const [open, setOpen] = React.useState(false);
@@ -51,6 +52,11 @@ function App(props) {
           <Route path="/server">
             <Container>
               <ServerStatus />
+            </Container>
+          </Route>
+          <Route path="/maps">
+            <Container>
+              <MapHelper />
             </Container>
           </Route>
           <Route path="/">

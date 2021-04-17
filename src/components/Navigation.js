@@ -13,6 +13,21 @@ function Navigation(props) {
     props.toggleDrawer()
     props.history.push(page)
   }
+  const getLinks = () => (<List>
+    <ListItem button onClick={() => navigate("/")}>
+      <ListItemText primary={"Home"} />
+    </ListItem>
+    <ListItem button onClick={() => navigate("/server")}>
+      <ListItemText primary={"Server Status"} />
+    </ListItem>
+    <ListItem button onClick={() => navigate("/leaderboard")}>
+      <ListItemText primary={"Leaderboard"} />
+    </ListItem>
+    <ListItem button onClick={() => navigate("/maps")}>
+      <ListItemText primary={"MapRotation Helper"} />
+    </ListItem>
+  </List>)
+
   return (
     <React.Fragment>
       <Drawer
@@ -23,19 +38,9 @@ function Navigation(props) {
         classes={{ paper: "drawer" }}
       >
         <Toolbar />
-                <List>
-            <ListItem button onClick={() => navigate("/")}>
-                <ListItemText primary={"Home"}  />
-            </ListItem>
-            <ListItem button onClick={() => navigate("/server")}>
-                <ListItemText primary={"Server Status"}  />
-            </ListItem>
-            <ListItem button onClick={() => navigate("/leaderboard")}>
-                <ListItemText primary={"Leaderboard"} />
-            </ListItem>
-          </List> 
+        {getLinks()}
       </Drawer>
-    <Drawer
+      <Drawer
         className={"drawer desktop"}
         variant="persistent"
         anchor="left"
@@ -43,20 +48,12 @@ function Navigation(props) {
         classes={{ paper: "drawer" }}
       >
         <Toolbar />
-                <List>
-            <ListItem button onClick={() =>  navigate("/")}>
-                <ListItemText primary={"Home"}  />
-            </ListItem>
-            <ListItem button onClick={() => navigate("/server")}>
-                <ListItemText primary={"Server Status"}  />
-            </ListItem>
-            <ListItem button onClick={() => navigate("/leaderboard")}>
-                <ListItemText primary={"Leaderboard"} />
-            </ListItem>
-          </List> 
+        <List>
+          {getLinks()}
+        </List>
       </Drawer>
-      </React.Fragment>
-    
+    </React.Fragment>
+
   );
 }
 
