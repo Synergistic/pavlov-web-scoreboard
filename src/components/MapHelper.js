@@ -47,7 +47,7 @@ function MapHelper() {
 
     return (
         <React.Fragment>
-            <Typography variant='h4' className="header" gutterBottom>MapRotation Helper</Typography>
+            <Typography variant='h4' className="header" gutterBottom>MapRotation Editor</Typography>
             <Grid container spacing={3}>
                 {result && result.length > 0 && !loading &&
                     <React.Fragment>

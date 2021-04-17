@@ -24,7 +24,7 @@ function Navigation(props) {
       <ListItemText primary={"Leaderboard"} />
     </ListItem>
     <ListItem button onClick={() => navigate("/maps")}>
-      <ListItemText primary={"MapRotation Helper"} />
+      <ListItemText primary={"MapRotation Editor"} />
     </ListItem>
   </List>)
 
