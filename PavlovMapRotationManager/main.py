@@ -18,7 +18,7 @@ class PavlovMapThing:
          } for d in [d.strip().split(",") for d in self.__stripRotationStrip(mapRotationString) if d]]
 
     def data_to_rotation(self, mapDataSet):
-        return ["MapRotation=(MapId='{}', GameMode='{}')".format(m["id"], m["gameMode"]) for m in mapDataSet]
+        return ['MapRotation=(MapId="{}", GameMode="{}")'.format(m["id"], m["gameMode"]) for m in mapDataSet]
     
     def __stripRotationStrip(self, mapRotationString):
         return mapRotationString.replace('"',"'").replace("MapRotation=(MapId='", "").replace("', GameMode='",",").replace("')","|").split("|")
